@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Объекты недвижимости</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Список недвижимости</h1>
+
+    <form method="get">
+        <input type="text" name="search" placeholder="Поиск по ЖК..." value="{{ search }}">
+        <select name="view" onchange="this.form.submit()">
+            <option value="table" {% if view == 'table' %}selected{% endif %}>Таблица</option>
+            <option value="cards" {% if view == 'cards' %}selected{% endif %}>Карточки</option>
+        </select>
+        <button type="submit">Найти</button>
+    </form>
+
+    {% if view == 'table' %}
+    <table>
+        <thead>
+            <tr>
+                <th>ЖК</th>
+                <th>Тип</th>
+                <th>Комнат</th>
+                <th>Площадь (м²)</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row['project_name_matched'] }}</td>
+                <td>{{ row['property_type'] }}</td>
+                <td>{{ row['room_number'] }}</td>
+                <td>{{ row['size'] }}</td>
+                <td>{{ row['price'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="cards">
+        {% for row in data %}
+        <div class="card">
+            <h2>{{ row['project_name_matched'] }}</h2>
+            <p><strong>Тип:</strong> {{ row['property_type'] }}</p>
+            <p><strong>Комнат:</strong> {{ row['room_number'] }}</p>
+            <p><strong>Площадь:</strong> {{ row['size'] }} м²</p>
+            <p><strong>Цена:</strong> {{ row['price'] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
